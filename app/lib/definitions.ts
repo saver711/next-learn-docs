@@ -15,13 +15,16 @@ export type Customer = {
   email: string
   image_url: string
 }
-
+export enum InvoiceStatus {
+  pending = "pending",
+  paid = "paid"
+}
 export type Invoice = {
   id: string
   customer_id: string
   amount: number
   date: string
-  status: "pending" | "paid"
+  status: InvoiceStatus
 }
 
 export type Revenue = {
@@ -50,7 +53,7 @@ export type InvoicesTable = {
   image_url: string
   date: string
   amount: number
-  status: "pending" | "paid"
+  status: InvoiceStatus
 }
 
 export type CustomersTableType = {
@@ -82,5 +85,5 @@ export type InvoiceForm = {
   id: string
   customer_id: string
   amount: number
-  status: "pending" | "paid"
+  status: InvoiceStatus
 }
