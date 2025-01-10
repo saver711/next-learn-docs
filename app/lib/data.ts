@@ -87,7 +87,6 @@ export async function fetchLatestInvoices(): Promise<
 // Fetch card data
 export async function fetchCardData() {
   try {
-    await new Promise(resolve => setTimeout(resolve, 6000))
     const [invoiceCount, customerCount, { data, error }] = await Promise.all([
       supabase.from("invoices").select("id", { count: "exact" }),
       supabase.from("customers").select("id", { count: "exact" }),
@@ -95,11 +94,9 @@ export async function fetchCardData() {
     ])
 
     if (error) {
-      console.error("Error fetching data:", error)
-      throw new Error("Failed to fetch invoice status.")
+      throw new Error(error.message)
     }
 
-    // Perform aggregation in JavaScript
     const invoiceStatus = data.reduce(
       (acc, invoice) => {
         if (invoice.status === InvoiceStatus.paid) {
@@ -113,14 +110,16 @@ export async function fetchCardData() {
     )
 
     return {
-      numberOfCustomers: customerCount.count || 0,
-      numberOfInvoices: invoiceCount.count || 0,
-      totalPaidInvoices: formatCurrency(invoiceStatus.paid || 0),
-      totalPendingInvoices: formatCurrency(invoiceStatus.pending || 0)
+      data: {
+        numberOfCustomers: customerCount.count || 0,
+        numberOfInvoices: invoiceCount.count || 0,
+        totalPaidInvoices: formatCurrency(invoiceStatus.paid || 0),
+        totalPendingInvoices: formatCurrency(invoiceStatus.pending || 0)
+      }
     }
   } catch (error) {
-    console.error("Database Error:", error)
-    throw new Error("Failed to fetch card data.")
+    const err = error as Error
+    return { error: err.message }
   }
 }
 
