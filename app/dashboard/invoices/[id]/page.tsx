@@ -1,4 +1,4 @@
-import { fetchInvoiceById } from "@/app/lib/data"
+import { fetchFilteredInvoices, fetchInvoiceById } from "@/app/lib/data"
 import { Metadata } from "next"
 
 export const generateMetadata = async (props: {
@@ -28,3 +28,9 @@ const InvoiceDetailsPage = async (props: {
   return <>Details for id: {invoiceId}</>
 }
 export default InvoiceDetailsPage
+export const generateStaticParams = async () => {
+  const invoices = await fetchFilteredInvoices("", 1)
+  return invoices.map((invoice: { id: string }) => ({
+    params: { id: invoice.id }
+  }))
+}
