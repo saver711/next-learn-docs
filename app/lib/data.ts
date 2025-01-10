@@ -7,10 +7,19 @@ const ITEMS_PER_PAGE = 6
 // Fetch revenue
 export async function fetchRevenue(): Promise<Revenue[]> {
   try {
-    await new Promise(resolve => setTimeout(resolve, 9000))
-    const { data } = await supabase.from("revenue").select("*")
+    // Simulate a delay (for testing purposes)
+    await new Promise(resolve => setTimeout(resolve, 1000))
 
-    return data as Revenue[]
+    // Return fake revenue data
+    const fakeData: Revenue[] = [
+      { month: "January", revenue: 1000 },
+      { month: "February", revenue: 3200 },
+      { month: "March", revenue: 2800 },
+      { month: "April", revenue: 4100 },
+      { month: "May", revenue: 3750 }
+    ]
+
+    return fakeData
   } catch (error) {
     console.error("Database Error:", error)
     throw new Error("Failed to fetch revenue data.")
@@ -78,6 +87,7 @@ export async function fetchLatestInvoices(): Promise<
 // Fetch card data
 export async function fetchCardData() {
   try {
+    await new Promise(resolve => setTimeout(resolve, 6000))
     const [invoiceCount, customerCount, { data, error }] = await Promise.all([
       supabase.from("invoices").select("id", { count: "exact" }),
       supabase.from("customers").select("id", { count: "exact" }),

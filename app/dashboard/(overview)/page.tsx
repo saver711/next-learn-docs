@@ -1,6 +1,6 @@
 import CardWrapper from "@/app/ui/dashboard/cards"
 import LatestInvoices from "@/app/ui/dashboard/latest-invoices"
-import RevenueChart from "@/app/ui/dashboard/revenue-chart"
+import Revenue from "@/app/ui/dashboard/revenue"
 
 import {
   CardsSkeleton,
@@ -20,7 +20,7 @@ const DashboardPage = async () => {
       </div>
       <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-4 lg:grid-cols-8">
         <Suspense fallback={<RevenueChartSkeleton />}>
-          <RevenueChart />
+          <Revenue />
         </Suspense>
         <Suspense fallback={<LatestInvoicesSkeleton />}>
           <LatestInvoices />
